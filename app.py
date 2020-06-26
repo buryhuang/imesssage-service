@@ -25,6 +25,13 @@ def handle_imesssage():
         print("sending %s to %s" % (data.get('video-url'), data.get('receiver_number')))
         generate_send_script("+12038942437", data.get('receiver_number'), data.get('msg'))
         result = os.system('/usr/bin/osascript send_message.applescript')
+        print("executed with return %d" % result)
+        if result != 0:
+            print("Failed to send as SMS, trying to send as iMessage")
+            generate_send_script_imessage("+12038942437", data.get('receiver_number'), data.get('msg'))
+            result = os.system('/usr/bin/osascript -e \'tell application \"Messages\" to send \"%s\" to buddy \"%s\" of service \"SMS\"\'' % ())
+            print("executed with return %d" % result)
+
     return "Executed! with %d" % result
 
 if __name__ == '__main__':
